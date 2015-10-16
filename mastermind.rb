@@ -1,3 +1,5 @@
+require 'pry'
+
 puts "Welcome to Mastermind"
 
 puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
@@ -15,17 +17,44 @@ else
   puts "Exiting Program"
 end
 
-if guess.length < 4
+choices = ["r","g","b","y"]
+
+
+if guess == "c"
+  puts "Here is the secret code loser"
+  puts random_choices.to_s
+elsif  guess.length < 4
   puts "Code is too short - must be four letters"
 elsif guess.length > 4
   puts "Code is too long - must be four letter"
 elsif guess == "q"
   puts "exiting the game"
-elsif guess == "c"
-  puts "Here is the secret code"
 else
   puts "Let's play!"
 end
+
+guess_array = guess.split("")
+
+difference = choices - guess_array
+#binding.pry
+
+results = guess_array.zip(choices).map {|x,y| x==y}
+
+counter = results.count do |word|
+  word == true
+end
+
+
+# puts guess.inspect
+# puts random_choices.inspect
+
+puts "Guess: #{guess.to_s} has #{4 - difference.count} of the correct elements with #{counter} elements in the correct position(s)
+# You've taken 1 guess"
+
+
+
+
+
 
 
 

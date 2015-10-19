@@ -1,4 +1,5 @@
 require 'pry'
+require_relative "first_prompt"
 
 class Mastermind
 
@@ -7,43 +8,12 @@ class Mastermind
   end
 
   def play
-    puts "Welcome to Mastermind"
-    puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
+    FirstPrompt.new.welcome_message
 
-    instructions = gets.chomp.to_s
-    starter(instructions)
+    # FirstPrompt.new(instructions).router
   end
 
-  def starter(instructions)
-    if instructions == "p"
-      puts "I have generated a beginner sequence with four elements made up of: (r)ed,
-          (g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game.
-          What's your guess?"
-      @guess = gets.chomp.to_s
-      guess_checker(@guess)
-    elsif instructions == "i"
-      puts "The goal of this game is to win"
-    elsif instructions == "q"
-      puts "Leaving game!"
-      exit!
-    end
-  end
 
-  def guess_checker(guess)
-    if guess == "c"
-      puts "Here is the secret code loser #{@final}"
-      exit!
-    elsif  guess.length < 4
-      puts "Code is too short - must be four letters"
-    elsif guess.length > 4
-      puts "Code is too long - must be four letter"
-    elsif guess == "q"
-      puts "exiting the game"
-    else
-      puts "Let's play!"
-      game_play
-    end
-  end
 
   def randomizer
     choices = ["r","g","b","y"]
@@ -56,11 +26,16 @@ class Mastermind
     @final
   end
 
+  def counter
+    guess = 1
+    @guess_counter = guess + 1
+  end
+
   def game_play
     guess_array = @guess.split("")
 
     if guess_array == @final
-      puts "Done"
+      puts "Congratulations you guess correctly! - Game Over"
     else
       difference = guess_array - @final
 
@@ -69,14 +44,14 @@ class Mastermind
       counter = results.count do |word|
         word == true
       end
-      guess = 0
-      guess_counter = guess + 1
+
+      counter
 
       puts guess_array.inspect
       puts @final.inspect
 
-      puts "Guess: #{guess.to_s} has NOT DONE of the correct elements with #{counter} elements in the correct position(s)
-      # You've taken #{guess_counter} guess - Try Again!"
+      puts "Guess:  has NOT DONE of the correct elements with #{counter} elements in the correct position(s)
+      # You've taken #{counter} guess(es) - Try Again!"
       play
     end
   end

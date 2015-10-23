@@ -32,7 +32,7 @@ class FirstPrompt
           (g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game.
           What's your guess?"
     guess = gets.chomp.to_s
-    GuessChecker.guess(guess)
+    GuessChecker.new.router(guess)
   end
 
   def show_instructions

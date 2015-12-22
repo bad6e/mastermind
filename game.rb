@@ -1,52 +1,112 @@
 require_relative 'router'
 
 class Game
+
   def initialize
-    @randomizer = randomizer
+    @key = key
     @counter = 0
   end
 
   def router(guess)
-    if guess == "q"
-      puts ""
-      exit!
-    elsif guess == "c"
-      secret_code
-      revert
-    elsif  guess.length < 4
-      puts "Code is too short - must be four letters"
-      revert
-    elsif guess.length > 4
-      puts "Code is too long - must be four letter"
-      revert
+    if options.has_key?(guess)
+      options[guess].call
     else
-      puts "Let's play!"
+      length_check(guess)
+    end
+  end
+
+  def options
+    {'c' => lambda{secret_code}, 'q' => lambda{exit}}
+  end
+
+  def color_choices
+    ["r","g","b","y"]
+  end
+
+  def key
+    secret_code = []
+    4.times do
+      secret_code << color_choices.sample
+    end
+    secret_code
+  end
+
+  def secret_code
+    puts "The secret code is #{@key}"
+    restart_message
+    router(gets.chomp.to_s)
+  end
+
+  def length_check(guess)
+    if guess.length > 4 || guess.length < 4
+      length_error_message
+      router(gets.chomp.to_s)
+    else
       play(guess)
     end
   end
 
-  def secret_code
-    puts "The secret code is #{@randomizer}"
+  def length_error_message
+    puts "The guess must contain exactly 4 colors! - try again idiot"
   end
 
-  def revert
-    puts "I have generated a beginner sequence with four elements made up of: (r)ed, (g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game. What's your guess?"
-    guess = gets.chomp.to_s
-    router(guess)
+  def play(guess)
+    correct_guess_checker(guess)
   end
 
-  def choices
-    ["r","g","b","y"]
-  end
-
-  def randomizer
-    shuffle_choices = choices.shuffle
-    @final = []
-    4.times do
-      @final << choices.sample
+  def correct_guess_checker(guess)
+    if guess.split("") == @key
+      win_message
+    else
+      incorrect_guess_checker(guess)
     end
-    @final
   end
+
+  def win_message
+    puts "Congratulations you guessed correctly! - Game Over"
+  end
+
+  def incorrect_guess_checker(guess)
+    position_checker(guess)
+    puts "Your guess has INSERT LATER of the correct elements with #{@results} elements in the correct position(s) -- Guess Again!"
+    router(gets.chomp.to_s)
+  end
+
+  def position_checker(guess)
+    results = guess.split("").zip(@key).map {|x,y| x == y}
+    @results = results.count {|word| word == true}
+  end
+
+  def element_checker
+
+  end
+
+  def exit
+    exit_message
+    exit!
+  end
+
+  def exit_message
+    puts "You have left the game - goodbye!"
+  end
+
+  def restart_message
+    puts "Let's try this again - please enter a guess"
+  end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   def elements(guess)
     elements = []
@@ -75,25 +135,7 @@ class Game
     # binding.pry
   end
 
-  def play(guess)
-    guess_array = guess.split("")
-    if guess_array == @final
-      puts "Congratulations you guessed correctly! - Game Over"
-    else
-      @counter += 1
-      guess_checker(guess_array)
-      elements(guess_array)
-      puts "Your guess has #{@element_results} of the correct elements with #{@result} elements in the correct position(s)
-      # You've taken #{@counter} guess(es) - Try Again!"
-      revert
-    end
-  end
 
-  def guess_checker(guess_array)
-    results = guess_array.zip(@final).map {|x,y| x == y}
-    @result = results.count do |word|
-      word == true
-    end
-    @result
-  end
+
+
 end

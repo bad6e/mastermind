@@ -1,6 +1,6 @@
-require_relative 'first_prompt'
+require_relative 'router'
 
-class GuessChecker
+class Game
   def initialize
     @randomizer = randomizer
     @counter = 0
@@ -8,7 +8,7 @@ class GuessChecker
 
   def router(guess)
     if guess == "q"
-      puts "EXITING THE GAME!"
+      puts ""
       exit!
     elsif guess == "c"
       secret_code
@@ -30,11 +30,9 @@ class GuessChecker
   end
 
   def revert
-     puts "I have generated a beginner sequence with four elements made up of: (r)ed,
-          (g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game.
-          What's your guess?"
-      guess = gets.chomp.to_s
-      router(guess)
+    puts "I have generated a beginner sequence with four elements made up of: (r)ed, (g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game. What's your guess?"
+    guess = gets.chomp.to_s
+    router(guess)
   end
 
   def choices
@@ -51,17 +49,30 @@ class GuessChecker
   end
 
   def elements(guess)
-    n = 0
     elements = []
-    guess.each do |l|
-      elements << l.include?(choices[n])
+    group = @final.uniq
+    group_length = @final.uniq.length
+    n = 0
+    group_length.times do
+      elements << guess.include?(group[n])
       n+1
     end
 
-    @element_results = elements.count do |word|
-      word == true
-    end
-    @element_results
+    4 - elements.length
+
+    # binding.pry
+
+    # elements << guess.include?(@final[0])
+    # elements << guess.include?(@final[1])
+    # elements << guess.include?(@final[2])
+    # elements << guess.include?(@final[3])
+
+
+    # @element_results = elements.count do |word|
+    #   word == true
+    # end
+    # @element_results
+    # binding.pry
   end
 
   def play(guess)

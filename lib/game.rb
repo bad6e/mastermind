@@ -2,9 +2,10 @@ require_relative 'router'
 
 class Game
 
+  attr_accessor :key
+
   def initialize
     @key = key
-    @counter = 0
   end
 
   def router(guess)
@@ -68,6 +69,11 @@ class Game
 
   def incorrect_guess_checker(guess)
     position_checker(guess)
+    element_checker(guess)
+    incorrect_guess_message
+  end
+
+  def incorrect_guess_message
     puts "Your guess has INSERT LATER of the correct elements with #{@results} elements in the correct position(s) -- Guess Again!"
     router(gets.chomp.to_s)
   end
@@ -77,7 +83,7 @@ class Game
     @results = results.count {|word| word == true}
   end
 
-  def element_checker
+  def element_checker(guess)
 
   end
 
@@ -93,49 +99,4 @@ class Game
   def restart_message
     puts "Let's try this again - please enter a guess"
   end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  def elements(guess)
-    elements = []
-    group = @final.uniq
-    group_length = @final.uniq.length
-    n = 0
-    group_length.times do
-      elements << guess.include?(group[n])
-      n+1
-    end
-
-    4 - elements.length
-
-    # binding.pry
-
-    # elements << guess.include?(@final[0])
-    # elements << guess.include?(@final[1])
-    # elements << guess.include?(@final[2])
-    # elements << guess.include?(@final[3])
-
-
-    # @element_results = elements.count do |word|
-    #   word == true
-    # end
-    # @element_results
-    # binding.pry
-  end
-
-
-
-
 end

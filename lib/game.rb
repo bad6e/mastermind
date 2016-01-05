@@ -41,7 +41,6 @@ class Game
   def length_check(guess)
     if guess.length > 4 || guess.length < 4
       length_error_message
-      router(gets.chomp.to_s)
     else
       play(guess)
     end
@@ -49,6 +48,7 @@ class Game
 
   def length_error_message
     puts "The guess must contain exactly 4 colors! - try again idiot"
+    router(gets.chomp.to_s)
   end
 
   def play(guess)

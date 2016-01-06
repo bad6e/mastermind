@@ -80,7 +80,7 @@ class Game
 
   def position_checker(guess)
     results = guess.split("").zip(@key).map {|x,y| x == y}
-    @results = results.count {|word| word == true}
+    true_counter(results)
   end
 
   def element_checker(guess)
@@ -90,7 +90,11 @@ class Game
     split_guess.each do |r|
       results << @key.include?(r)
     end
-    result = results.count {|word| word == true}
+    true_counter(results)
+  end
+
+  def true_counter(array)
+    array.count {|word| word == true}
   end
 
   def exit

@@ -50,7 +50,7 @@ class GameTest < Minitest::Test
   end
 
   def test_it_does_not_win_the_game_with_an_incorrect_guess
-    @game.stubs(:incorrect_guess_checker).returns("Continue On")
+    @game.stubs(:incorrect_guess_message).returns("Continue On")
     assert_equal(@game.correct_guess_checker("yyyr"), "Continue On")
   end
 

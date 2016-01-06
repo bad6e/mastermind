@@ -59,7 +59,7 @@ class Game
     if guess.split("") == @key
       win_message
     else
-      incorrect_guess_checker(guess)
+      incorrect_guess_message(guess)
     end
   end
 
@@ -67,14 +67,8 @@ class Game
     puts "Congratulations you guessed correctly! - Game Over"
   end
 
-  def incorrect_guess_checker(guess)
-    position_checker(guess)
-    element_checker(guess)
-    incorrect_guess_message
-  end
-
-  def incorrect_guess_message
-    puts "Your guess has INSERT LATER of the correct elements with #{@results} elements in the correct position(s) -- Guess Again!"
+  def incorrect_guess_message(guess)
+    puts "Your guess has #{element_checker(guess)} of the correct elements with #{position_checker(guess)} elements in the correct position(s) -- Guess Again!"
     router(gets.chomp.to_s)
   end
 
@@ -85,7 +79,6 @@ class Game
 
   def element_checker(guess)
     split_guess = guess.split("").uniq
-
     results = []
     split_guess.each do |r|
       results << @key.include?(r)

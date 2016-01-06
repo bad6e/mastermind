@@ -84,7 +84,13 @@ class Game
   end
 
   def element_checker(guess)
+    split_guess = guess.split("").uniq
 
+    results = []
+    split_guess.each do |r|
+      results << @key.include?(r)
+    end
+    result = results.count {|word| word == true}
   end
 
   def exit

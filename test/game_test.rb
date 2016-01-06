@@ -45,7 +45,6 @@ class GameTest < Minitest::Test
   end
 
   def test_it_wins_the_game_with_the_correct_guess
-    skip
     @game.stubs(:win_message).returns("You Won")
     assert_equal(@game.correct_guess_checker("rgby"), "You Won")
   end
@@ -60,27 +59,44 @@ class GameTest < Minitest::Test
   end
 
   def test_it_finds_the_correct_number_of_elements_with_one
-    skip
     guess = 'yaaa'
     assert_equal(@game.element_checker(guess), 1)
   end
 
   def test_it_finds_the_correct_number_of_elements_with_two
-    skip
     guess = 'byaa'
     assert_equal(@game.element_checker(guess), 2)
   end
 
   def test_it_finds_the_correct_number_of_elements_with_three
-    skip
     guess = 'gbay'
     assert_equal(@game.element_checker(guess), 3)
   end
 
   def test_it_finds_the_correct_number_of_elements_with_four
-    skip
     game = Game.new
+    game.key = 'rgby'
     guess = 'ybgr'
     assert_equal(game.element_checker(guess), 4)
+  end
+
+  def test_it_finds_the_correct_number_of_elements_with_all_duplicates
+    guess = 'gggg'
+    assert_equal(@game.element_checker(guess), 1)
+  end
+
+  def test_it_finds_the_correct_number_of_elements_with_three_duplicates
+    guess = 'rrrg'
+    assert_equal(@game.element_checker(guess), 2)
+  end
+
+  def test_it_finds_the_correct_number_of_elements_with_two_duplicates
+    guess = 'ggaa'
+    assert_equal(@game.element_checker(guess), 1)
+  end
+
+  def test_it_finds_the_correct_number_of_elements_with_two_of_the_same_duplicates
+    guess = 'ggrr'
+    assert_equal(@game.element_checker(guess), 2)
   end
 end
